@@ -13,6 +13,8 @@ builder.Services.AddDbContext<StoreContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DatabaseConnection"));
 });
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,5 +39,7 @@ catch (Exception ex)
 {
     logger.LogError(ex, "A problem occured during migration");
 }
+
+app.MapControllers();
 
 app.Run();
