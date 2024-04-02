@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Book } from "../../app/models/book";
+import BookDisplay from "./BookDisplay";
 
 export default function Library()
 {
@@ -15,7 +16,7 @@ export default function Library()
     return (
         <ul>
             {books.map((book, index) => (
-                <li key={index}>{book.name}</li>
+                <BookDisplay key={index} book={book} />
             ))}
         </ul>
     );
