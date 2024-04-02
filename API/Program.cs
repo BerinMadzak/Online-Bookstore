@@ -14,6 +14,7 @@ builder.Services.AddDbContext<StoreContext>(options =>
 });
 
 builder.Services.AddControllers();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -40,6 +41,10 @@ catch (Exception ex)
     logger.LogError(ex, "A problem occured during migration");
 }
 
+app.UseCors(options =>
+{
+    options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+});
 app.MapControllers();
 
 app.Run();
