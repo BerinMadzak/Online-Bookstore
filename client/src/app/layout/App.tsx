@@ -1,11 +1,16 @@
+import { Container, CssBaseline } from "@mui/material";
 import Library from "../../features/library/Library";
+import Header from "./Header";
 
 function App() {
   return (
-    <div>
-      <h1>Online Bookstore</h1>
-      <Library />
-    </div>
+    <>
+      <CssBaseline />
+      <Header />
+      <Container sx={{mt: 10}}>
+        <Library />
+      </Container>
+    </>
   );
 }
 
