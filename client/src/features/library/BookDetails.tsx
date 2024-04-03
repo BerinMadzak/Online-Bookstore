@@ -1,17 +1,17 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Book } from "../../app/models/book";
-import { Button, CardMedia, Divider, Grid, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
-import { Image } from "@mui/icons-material";
+import { Button, Divider, Grid, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import agent from "../../app/agent";
 
 export default function BookDetails() {
     const {id} = useParams<{id: string}>();
     const [book, setBook] = useState<Book | null>();
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/books/${id}`)
-            .then(response => setBook(response.data))
+        id && 
+            agent.Library.details(parseInt(id))
+            .then(response => setBook(response))
             .catch(error => console.log(error));
     }, [id])
 

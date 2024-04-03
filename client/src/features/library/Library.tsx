@@ -1,17 +1,15 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Book } from "../../app/models/book";
 import BookDisplay from "./BookDisplay";
 import { Grid } from "@mui/material";
+import agent from "../../app/agent";
 
 export default function Library()
 {
     const [books, setBooks] = useState<Book[]>([]);
 
     useEffect(() => {
-      axios.get('http://localhost:5000/api/books')
-           .then(response => setBooks(response.data))
-           .catch(error => console.log(error));
+        agent.Library.list().then(books => setBooks(books))
     }, []);
 
     return (

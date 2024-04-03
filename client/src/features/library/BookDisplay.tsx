@@ -1,4 +1,4 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Divider } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
 import { Book } from "../../app/models/book";
 import { Link } from "react-router-dom";
 
