@@ -1,5 +1,6 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, Divider } from "@mui/material";
 import { Book } from "../../app/models/book";
+import { Link } from "react-router-dom";
 
 interface Props {
     book: Book;
@@ -28,7 +29,7 @@ export default function BookDisplay({book}: Props) {
         </CardContent>
         <CardActions sx={{mt: -1, justifyContent: 'center'}}>
             <Button size="small">Add To Cart</Button>
-            <Button size="small">Details</Button>
+            <Button size="small" component={Link} to={`/shop/${book.id}`}>Details</Button>
         </CardActions>
         </Card>
     );

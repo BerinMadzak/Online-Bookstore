@@ -2,6 +2,7 @@ import { Container, CssBaseline, ThemeProvider, createTheme, useTheme } from "@m
 import Library from "../../features/library/Library";
 import Header from "./Header";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -18,7 +19,7 @@ function App() {
       <CssBaseline />
       <Header darkMode={darkMode} setDarkMode={setDarkMode} />
       <Container sx={{mt: 10}}>
-        <Library />
+        <Outlet />
       </Container>
     </ThemeProvider>
   );
