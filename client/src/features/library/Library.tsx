@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Book } from "../../app/models/book";
 import BookDisplay from "./BookDisplay";
+import { Grid } from "@mui/material";
 
 export default function Library()
 {
@@ -14,10 +15,12 @@ export default function Library()
     }, []);
 
     return (
-        <ul>
+        <Grid container rowSpacing={1} columnSpacing={1}>
             {books.map((book, index) => (
-                <BookDisplay key={index} book={book} />
+                <Grid item xs={3}>
+                    <BookDisplay key={index} book={book} />
+                </Grid>
             ))}
-        </ul>
+        </Grid>
     );
 }
