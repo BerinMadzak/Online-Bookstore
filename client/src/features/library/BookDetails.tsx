@@ -58,7 +58,7 @@ export default function BookDetails() {
                     </Typography>
                 </Grid>
             </Grid>
-            <Button component={Link} to='/shop'>
+            <Button component={Link} to='/shop' sx={{width: '100%', mt: -15}}>
                 Back to shop
             </Button>
         </>
