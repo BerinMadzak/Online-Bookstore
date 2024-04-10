@@ -1,12 +1,19 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
 import { Book } from "../../app/models/book";
 import { Link } from "react-router-dom";
+import agent from "../../app/agent";
 
 interface Props {
     book: Book;
 }
 
 export default function BookDisplay({book}: Props) {
+
+    function addItemToCart(bookId: number) {
+        agent.ShoppingCart.addItem(bookId)
+            .catch(error => console.log(error));
+    }
+
     return (
         <Card sx={{ height: 470}}>
         <CardMedia
@@ -28,7 +35,7 @@ export default function BookDisplay({book}: Props) {
             </Typography>
         </CardContent>
         <CardActions sx={{mt: -1, justifyContent: 'center'}}>
-            <Button size="small">Add To Cart</Button>
+            <Button size="small" onClick={() => addItemToCart(book.id)}>Add To Cart</Button>
             <Button size="small" component={Link} to={`/shop/${book.id}`}>Details</Button>
         </CardActions>
         </Card>

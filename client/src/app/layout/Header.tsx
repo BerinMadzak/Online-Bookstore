@@ -23,7 +23,7 @@ export default function Header({darkMode, setDarkMode}: Props)
                         </IconButton>
                 </Box>
                 <Box display='flex' alignItems='center'>
-                    <IconButton size='large' sx={{mr: 2}}>
+                    <IconButton component={Link} to='/shoppingCart' size='large' sx={{mr: 2}}>
                         <Badge badgeContent='0' color='secondary'>
                             <ShoppingCart sx={{color: 'white'}}/>
                         </Badge>
