@@ -3,6 +3,7 @@ import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography } from "@mu
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../store/configureStore";
 
 interface Props {
     darkMode: boolean;
@@ -11,6 +12,9 @@ interface Props {
 
 export default function Header({darkMode, setDarkMode}: Props)
 {
+    const {shoppingCart} = useAppSelector(state => state.shoppingCart);
+    const itemCount = shoppingCart?.items.reduce((sum, item) => sum + item.quantity, 0);
+
     return (
         <AppBar position="fixed">
             <Toolbar sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -24,7 +28,7 @@ export default function Header({darkMode, setDarkMode}: Props)
                 </Box>
                 <Box display='flex' alignItems='center'>
                     <IconButton component={Link} to='/shoppingCart' size='large' sx={{mr: 2}}>
-                        <Badge badgeContent='0' color='secondary'>
+                        <Badge badgeContent={itemCount} color='secondary'>
                             <ShoppingCart sx={{color: 'white'}}/>
                         </Badge>
                     </IconButton>

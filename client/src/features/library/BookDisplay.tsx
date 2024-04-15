@@ -2,15 +2,20 @@ import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@
 import { Book } from "../../app/models/book";
 import { Link } from "react-router-dom";
 import agent from "../../app/agent";
+import { currencyDisplay } from "../../app/utility/utility";
+import { useAppDispatch } from "../../app/store/configureStore";
+import { addItemToCartAsync, setShoppingCart } from "../shoppingCart/shoppingCartSlice";
 
 interface Props {
     book: Book;
 }
 
 export default function BookDisplay({book}: Props) {
+    const dispatch = useAppDispatch();
 
     function addItemToCart(bookId: number) {
         agent.ShoppingCart.addItem(bookId)
+            .then(cart => dispatch(setShoppingCart(cart)))
             .catch(error => console.log(error));
     }
 
@@ -31,11 +36,11 @@ export default function BookDisplay({book}: Props) {
             {book.author}
             </Typography>
             <Typography variant="h6" sx={{textAlign: 'center', pt: 2}}>
-            ${(book.price/100)}{(book.price%100 === 0) ? '.00' : ''} 
+            {currencyDisplay(book.price)}
             </Typography>
         </CardContent>
         <CardActions sx={{mt: -1, justifyContent: 'center'}}>
-            <Button size="small" onClick={() => addItemToCart(book.id)}>Add To Cart</Button>
+            <Button size="small" onClick={() => dispatch(addItemToCartAsync({bookId: book.id}))}>Add To Cart</Button>
             <Button size="small" component={Link} to={`/shop/${book.id}`}>Details</Button>
         </CardActions>
         </Card>

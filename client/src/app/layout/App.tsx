@@ -1,10 +1,24 @@
-import { Container, CssBaseline, ThemeProvider, createTheme, useTheme } from "@mui/material";
-import Library from "../../features/library/Library";
+import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Header from "./Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { getCookie } from "../utility/utility";
+import agent from "../agent";
+import { useAppDispatch } from "../store/configureStore";
+import { setShoppingCart } from "../../features/shoppingCart/shoppingCartSlice";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const customerId = getCookie('customerId');
+    if(customerId){
+      agent.ShoppingCart.get()
+        .then(cart => dispatch(setShoppingCart(cart)))
+        .catch(error => console.log(error));
+    }
+  }, [dispatch]);
+
   const [darkMode, setDarkMode] = useState(true);
   const themeStyle = darkMode ? 'dark' : 'light';
 
