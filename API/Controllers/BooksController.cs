@@ -1,6 +1,6 @@
-using System.Net.Http.Headers;
 using API.Data;
 using API.Entities;
+using API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +16,13 @@ namespace API.Controllers
 
         //Endpoints
         [HttpGet]
-        public async Task<ActionResult<List<Book>>> GetBooks()
+        public async Task<ActionResult<List<Book>>> GetBooks(string orderBy)
         {
-            return await context.Books.ToListAsync();
+            var query = context.Books
+                .Sort(orderBy)
+                .AsQueryable();
+
+            return await query.ToListAsync();
         }
 
         [HttpGet("{id}")]
