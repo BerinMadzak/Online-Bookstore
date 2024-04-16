@@ -60,6 +60,14 @@ export const getFiltersAsync = createAsyncThunk(
     }
 )
 
+function initialBookParameters() {
+    return {
+        pageNumber: 1,
+        pageSize: 8,
+        orderBy: 'name'
+    }
+};
+
 export const bookstoreSlice = createSlice({
     name: 'bookstore',
     initialState: adapter.getInitialState<BookstoreState>({
@@ -67,11 +75,7 @@ export const bookstoreSlice = createSlice({
         filtersLoaded: false,
         genres: [],
         authors: [],
-        bookParameters: {
-            pageNumber: 1,
-            pageSize: 6,
-            orderBy: 'name'
-        }
+        bookParameters: initialBookParameters()
     }),
     reducers: {
         setBookParameters: (state, action) => {
@@ -79,11 +83,7 @@ export const bookstoreSlice = createSlice({
             state.bookParameters = {...state.bookParameters, ...action.payload};
         },
         resetBookParameters: (state) => {
-            state.bookParameters = {
-                pageNumber: 1,
-                pageSize: 6,
-                orderBy: 'name'
-            };
+            state.bookParameters = initialBookParameters();
         }
     },
     extraReducers: (builder => {

@@ -29,10 +29,10 @@ export default function BookDisplay({book}: Props) {
             sx={{objectFit: 'contain', pt: 2}}
         />
         <CardContent>
-            <Typography variant="h4" sx={{textAlign: 'center', fontSize: '1.5em'}}>
+            <Typography variant="h4" sx={{textAlign: 'center', fontSize: '1em'}}>
             {book.name}
             </Typography>
-            <Typography variant="h6" sx={{fontWeight: 'normal', fontSize: '1em', textAlign: 'center'}}>
+            <Typography variant="h6" sx={{fontWeight: 'normal', fontSize: '0.7em', textAlign: 'center'}}>
             {book.author}
             </Typography>
             <Typography variant="h6" sx={{textAlign: 'center', pt: 2}}>
