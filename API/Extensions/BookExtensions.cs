@@ -26,5 +26,18 @@ namespace API.Extensions
 
             return query.Where(p => p.Name.ToLower().Contains(term));
         }
+
+        public static IQueryable<Book> Filter(this IQueryable<Book> query, string genres, string author)
+        {
+            var genreList = new List<string>();
+
+            if (!string.IsNullOrEmpty(genres)) genreList.AddRange(genres.ToLower().Split(',').ToList());
+
+            query = query.Where(p => genreList.Count == 0 || genreList.Contains(p.Genre.ToLower()));
+
+            if (!string.IsNullOrEmpty(author)) query = query.Where(p => p.Author.ToLower() == author.ToLower());
+
+            return query;
+        }
     }
 }

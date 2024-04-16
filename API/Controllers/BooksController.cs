@@ -16,11 +16,12 @@ namespace API.Controllers
 
         //Endpoints
         [HttpGet]
-        public async Task<ActionResult<List<Book>>> GetBooks(string orderBy, string search)
+        public async Task<ActionResult<List<Book>>> GetBooks(string orderBy, string search, string genres, string author)
         {
             var query = context.Books
                 .Sort(orderBy)
                 .Search(search)
+                .Filter(genres, author)
                 .AsQueryable();
 
             return await query.ToListAsync();
