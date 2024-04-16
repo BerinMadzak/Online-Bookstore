@@ -1,15 +1,21 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { bookSelectors, getBooksAsync, getFiltersAsync } from "./bookstoreSlice";
+import { bookSelectors, getBooksAsync, getFiltersAsync, setBookParameters } from "./bookstoreSlice";
 import BookList from "./BookList";
-import { Box, FormControl, Grid, Pagination, Paper, RadioGroup, TextField, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, Grid, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import BookSearch from "./BookSearch";
 
 export default function Bookstore()
 {
     const books = useAppSelector(bookSelectors.selectAll);
-    const {booksLoaded, filtersLoaded} = useAppSelector(state => state.bookstore);
+    const {booksLoaded, filtersLoaded, genres, authors, bookParameters} = useAppSelector(state => state.bookstore);
     const dispatch = useAppDispatch();
+
+    const sortOptions = [
+        {value: 'name', label: 'Alphabetical'},
+        {value: 'priceDesc', label: 'Price - High to low'},
+        {value: 'price', label: 'Price - Low to high'}
+    ];
 
     useEffect(() => {
         if(!booksLoaded) dispatch(getBooksAsync());
@@ -27,8 +33,12 @@ export default function Bookstore()
                 </Paper>
                 <Paper sx={{mb: 2, p: 2}}>
                     <FormControl>
-                        <RadioGroup>
-                            SORT OPTIONS
+                        <RadioGroup value={bookParameters.orderBy} 
+                            onChange={(e) => dispatch(setBookParameters({orderBy: e.target.value}))}
+                        >
+                            {sortOptions.map(({value, label}) => (
+                                <FormControlLabel value={value} control={<Radio />} label={label} key={value} />
+                            ))}
                         </RadioGroup>
                     </FormControl>
                 </Paper>
