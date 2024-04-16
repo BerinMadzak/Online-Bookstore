@@ -5,24 +5,22 @@ import { Button, Divider, Grid, TableCell, TableContainer, TableRow, TextField, 
 import agent from "../../app/agent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addItemToCartAsync, removeItemFromCartAsync } from "../shoppingCart/shoppingCartSlice";
+import { bookSelectors, getBookAsync } from "./bookstoreSlice";
 
 export default function BookDetails() {
     const {shoppingCart} = useAppSelector(state => state.shoppingCart);
     const dispatch = useAppDispatch();
 
     const {id} = useParams<{id: string}>();
-    const [book, setBook] = useState<Book | null>();
+    const book = useAppSelector(state => bookSelectors.selectById(state, parseInt(id!)));
 
     const [quantity, setQuantity] = useState(0);
     const item = shoppingCart?.items.find(i => i.bookId === book?.id);
 
     useEffect(() => {
         if(item) setQuantity(item.quantity);
-        id && 
-            agent.Bookstore.details(parseInt(id))
-            .then(response => setBook(response))
-            .catch(error => console.log(error));
-    }, [id, item])
+        if(!book && id) dispatch(getBookAsync(parseInt(id)));
+    }, [id, item, dispatch, book]);
 
     function handleInputChange(event: any){
         if(event.target.value >= 0){
@@ -84,7 +82,7 @@ export default function BookDetails() {
                         </Grid>
                         <Grid item xs={6}>
                             <Button
-                                disabled={item?.quantity === quantity || !item && quantity === 0} 
+                                disabled={item?.quantity === quantity} 
                                 onClick={handleUpdateCart} sx={{height: '55px'}} color='primary'
                                 size='large' variant='contained' fullWidth >
                                     {item ? 'Update quantity' : 'Add to cart'}
