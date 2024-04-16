@@ -97,6 +97,8 @@ export const bookstoreSlice = createSlice({
         builder.addCase(getFiltersAsync.fulfilled, (state, action) => {
             state.genres = action.payload.genres;
             state.authors = action.payload.authors;
+            state.authors.sort();
+            state.authors = ["All", ...state.authors];
             state.filtersLoaded = true;
         });
     })

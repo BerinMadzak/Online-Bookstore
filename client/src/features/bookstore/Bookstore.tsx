@@ -4,6 +4,8 @@ import { bookSelectors, getBooksAsync, getFiltersAsync, setBookParameters } from
 import BookList from "./BookList";
 import { Box, FormControl, FormControlLabel, Grid, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import BookSearch from "./BookSearch";
+import FilterCheckbox from "./FilterCheckbox";
+import FilterDropdown from "./FilterDropdown";
 
 export default function Bookstore()
 {
@@ -43,10 +45,18 @@ export default function Bookstore()
                     </FormControl>
                 </Paper>
                 <Paper sx={{mb: 2, p: 2}}>
-                    GENRES
+                    <FilterCheckbox items={genres} checked={bookParameters.genres} 
+                        onChange={(items: string[]) => dispatch(setBookParameters({genres: items}))}
+                    />
                 </Paper>
                 <Paper sx={{mb: 2, p: 2}}>
-                    AUTHORS
+                    <FilterDropdown items={authors} selectedValue={bookParameters.author ? bookParameters.author : "All"}
+                        onChange={(e) => {
+                            let author = e.target.value;
+                            if(author === "All") author = undefined;
+                            dispatch(setBookParameters({author}))}
+                        }
+                    />
                 </Paper>
             </Grid>
             <Grid item xs={9}>
