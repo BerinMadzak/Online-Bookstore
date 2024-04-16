@@ -13,7 +13,7 @@ const requests = {
     delete: (url: string) => axios.delete(url).then(responseBody)
 }
 
-const Library = {
+const Bookstore = {
     list: () => requests.get('books'),
     details: (id: number) => requests.get(`books/${id}`)
 }
@@ -25,7 +25,7 @@ const ShoppingCart = {
 }
 
 const agent = {
-    Library,
+    Bookstore,
     ShoppingCart
 }
 

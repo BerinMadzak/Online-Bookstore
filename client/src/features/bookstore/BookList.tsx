@@ -1,17 +1,12 @@
-import { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import { Book } from "../../app/models/book";
 import BookDisplay from "./BookDisplay";
-import { Grid } from "@mui/material";
-import agent from "../../app/agent";
 
-export default function Library()
-{
-    const [books, setBooks] = useState<Book[]>([]);
+interface Props{
+    books: Book[];
+}
 
-    useEffect(() => {
-        agent.Library.list().then(books => setBooks(books))
-    }, []);
-
+export default function BookList({books}: Props){
     return (
         <Grid container rowSpacing={1} columnSpacing={1}>
             {books.map((book, index) => (

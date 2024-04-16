@@ -19,7 +19,7 @@ export default function BookDetails() {
     useEffect(() => {
         if(item) setQuantity(item.quantity);
         id && 
-            agent.Library.details(parseInt(id))
+            agent.Bookstore.details(parseInt(id))
             .then(response => setBook(response))
             .catch(error => console.log(error));
     }, [id, item])
