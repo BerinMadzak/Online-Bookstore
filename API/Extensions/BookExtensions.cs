@@ -17,5 +17,14 @@ namespace API.Extensions
 
             return query;
         }
+
+        public static IQueryable<Book> Search(this IQueryable<Book> query, string search)
+        {
+            if (string.IsNullOrEmpty(search)) return query;
+
+            var term = search.Trim().ToLower();
+
+            return query.Where(p => p.Name.ToLower().Contains(term));
+        }
     }
 }
