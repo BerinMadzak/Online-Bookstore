@@ -9,3 +9,12 @@ export interface Book {
     yearOfRelease: string;
     numberOfPages: string;
 }
+
+export interface BookParameters {
+    orderBy: string;
+    search?: string;
+    genres?: string[];
+    author?: string;
+    pageNumber: number;
+    pageSize: number;
+}

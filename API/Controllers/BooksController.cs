@@ -42,5 +42,14 @@ namespace API.Controllers
 
             return book;
         }
+
+        [HttpGet("filters")]
+        public async Task<IActionResult> GetFilters()
+        {
+            var genres = await context.Books.Select(p => p.Genre).Distinct().ToListAsync();
+            var authors = await context.Books.Select(p => p.Author).Distinct().ToListAsync();
+
+            return Ok(new { genres, authors });
+        }
     }
 }
