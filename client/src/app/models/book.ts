@@ -13,8 +13,8 @@ export interface Book {
 export interface BookParameters {
     orderBy: string;
     search?: string;
-    genres?: string[];
-    author?: string;
+    genres: string[];
+    author: string;
     pageNumber: number;
     pageSize: number;
 }

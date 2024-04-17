@@ -2,6 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/too
 import { Book, BookParameters } from "../../app/models/book";
 import agent from "../../app/agent";
 import { RootState } from "../../app/store/configureStore";
+import { MetaData } from "../../app/models/pagination";
 
 interface BookstoreState {
     booksLoaded: boolean;
@@ -9,6 +10,7 @@ interface BookstoreState {
     genres: string[];
     authors: string[];
     bookParameters: BookParameters;
+    metaData: MetaData | null;
 }
 
 const adapter = createEntityAdapter<Book>();
@@ -20,7 +22,7 @@ function getAxiosParameters(bookParameters: BookParameters) {
     params.append('orderBy', bookParameters.orderBy);
 
     if(bookParameters.search) params.append('search', bookParameters.search);
-    if(bookParameters.genres) params.append('genres', bookParameters.genres.toString());
+    if(bookParameters.genres?.length > 0) params.append('genres', bookParameters.genres.toString());
     if(bookParameters.author) params.append('author', bookParameters.author);
 
     return params;
@@ -31,7 +33,9 @@ export const getBooksAsync = createAsyncThunk<Book[], void, {state: RootState}>(
     async(_, thunkAPI) => {
         const params = getAxiosParameters(thunkAPI.getState().bookstore.bookParameters);
         try {
-            return await agent.Bookstore.list(params);
+            const response = await agent.Bookstore.list(params);
+            thunkAPI.dispatch(setMetaData(response.metaData));
+            return response.items;
         } catch (error: any) {
             return thunkAPI.rejectWithValue({error: error.data});
         }
@@ -64,7 +68,9 @@ function initialBookParameters() {
     return {
         pageNumber: 1,
         pageSize: 8,
-        orderBy: 'name'
+        orderBy: 'name',
+        genres: [],
+        author: ''
     }
 };
 
@@ -75,15 +81,23 @@ export const bookstoreSlice = createSlice({
         filtersLoaded: false,
         genres: [],
         authors: [],
-        bookParameters: initialBookParameters()
+        bookParameters: initialBookParameters(),
+        metaData: null
     }),
     reducers: {
         setBookParameters: (state, action) => {
             state.booksLoaded = false;
-            state.bookParameters = {...state.bookParameters, ...action.payload};
+            state.bookParameters = {...state.bookParameters, ...action.payload, pageNumber: 1};
         },
         resetBookParameters: (state) => {
             state.bookParameters = initialBookParameters();
+        },
+        setMetaData: (state, action) => {
+            state.metaData = action.payload;
+        },
+        setPageNumber: (state, action) => {
+            state.booksLoaded = false;
+            state.bookParameters = {...state.bookParameters, ...action.payload};
         }
     },
     extraReducers: (builder => {
@@ -105,4 +119,4 @@ export const bookstoreSlice = createSlice({
 })
 
 export const bookSelectors = adapter.getSelectors((state: RootState) => state.bookstore);
-export const {setBookParameters, resetBookParameters} = bookstoreSlice.actions;
+export const {setBookParameters, resetBookParameters, setMetaData, setPageNumber} = bookstoreSlice.actions;

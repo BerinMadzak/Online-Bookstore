@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { bookSelectors, getBooksAsync, getFiltersAsync, setBookParameters } from "./bookstoreSlice";
+import { bookSelectors, getBooksAsync, getFiltersAsync, setBookParameters, setPageNumber } from "./bookstoreSlice";
 import BookList from "./BookList";
-import { Box, FormControl, FormControlLabel, Grid, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, Grid, Pagination, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import BookSearch from "./BookSearch";
 import FilterCheckbox from "./FilterCheckbox";
 import FilterDropdown from "./FilterDropdown";
+import BookstorePagination from "./BookstorePagination";
 
 export default function Bookstore()
 {
     const books = useAppSelector(bookSelectors.selectAll);
-    const {booksLoaded, filtersLoaded, genres, authors, bookParameters} = useAppSelector(state => state.bookstore);
+    const {booksLoaded, filtersLoaded, genres, authors, bookParameters, metaData} = useAppSelector(state => state.bookstore);
     const dispatch = useAppDispatch();
 
     const sortOptions = [
@@ -26,6 +27,8 @@ export default function Bookstore()
     useEffect(() => {
         if(!filtersLoaded) dispatch(getFiltersAsync());
     }, [filtersLoaded, dispatch]);
+
+    if(!metaData) return <Typography>Loading...</Typography>
 
     return (
         <Grid container spacing={4}>
@@ -64,10 +67,7 @@ export default function Bookstore()
             </Grid>
             <Grid item xs={3} />
             <Grid item xs={9}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography>PAGES</Typography>
-                    <Pagination color="secondary" size="large" count={10} page={2} />
-                </Box>
+                <BookstorePagination metaData={metaData} onPageChange={(page: number) => dispatch(setPageNumber({pageNumber: page}))}/>
             </Grid>
         </Grid>
     );
