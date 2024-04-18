@@ -6,6 +6,8 @@ import BookDetails from "../../features/bookstore/BookDetails";
 import ErrorPage from "../../features/home/ErrorPage";
 import ShoppingCartDisplay from "../../features/shoppingCart/ShoppingCartDisplay";
 import Checkout from "../../features/checkout/Checkout";
+import Login from "../../features/account/Login";
+import Register from "../../features/account/Register";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +20,8 @@ export const router = createBrowserRouter([
             {path: 'error', element: <ErrorPage />},
             {path: 'shoppingCart', element: <ShoppingCartDisplay />},
             {path: 'checkout', element: <Checkout />},
+            {path: 'login', element: <Login />},
+            {path: 'register', element: <Register />},
             {path: '*', element: <Navigate replace to='/error' />}
         ]
     }
