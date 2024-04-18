@@ -32,7 +32,7 @@ namespace API.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
             var user = new User { UserName = registerDto.Username, Email = registerDto.Email };

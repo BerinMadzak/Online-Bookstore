@@ -1,25 +1,28 @@
 import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Header from "./Header";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { getCookie } from "../utility/utility";
 import agent from "../agent";
 import { useAppDispatch } from "../store/configureStore";
-import { setShoppingCart } from "../../features/shoppingCart/shoppingCartSlice";
+import { getShoppingCartAsync, setShoppingCart } from "../../features/shoppingCart/shoppingCartSlice";
 import { getCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const customerId = getCookie('customerId');
-    dispatch(getCurrentUser());
-    if(customerId){
-      agent.ShoppingCart.get()
-        .then(cart => dispatch(setShoppingCart(cart)))
-        .catch(error => console.log(error));
+  const init = useCallback(async() => {
+    try {
+      await dispatch(getCurrentUser());
+      await dispatch(getShoppingCartAsync());
+    } catch(error: any) {
+      console.log(error);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   const [darkMode, setDarkMode] = useState(true);
   const themeStyle = darkMode ? 'dark' : 'light';
