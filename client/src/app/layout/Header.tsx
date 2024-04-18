@@ -1,9 +1,10 @@
 import { ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, Button, IconButton, List, Toolbar, Typography } from "@mui/material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
+import SignedInMenu from "./SignedInMenu";
 
 interface Props {
     darkMode: boolean;
@@ -12,6 +13,7 @@ interface Props {
 
 export default function Header({darkMode, setDarkMode}: Props)
 {
+    const {user} = useAppSelector(state => state.account);
     const {shoppingCart} = useAppSelector(state => state.shoppingCart);
     const itemCount = shoppingCart?.items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -32,6 +34,7 @@ export default function Header({darkMode, setDarkMode}: Props)
                             <ShoppingCart sx={{color: 'white'}}/>
                         </Badge>
                     </IconButton>
+                    {user && <SignedInMenu />}
                 </Box>
             </Toolbar>
         </AppBar>

@@ -10,7 +10,7 @@ export default function BookList({books}: Props){
     return (
         <Grid container rowSpacing={1} columnSpacing={1}>
             {books.map((book, index) => (
-                <Grid item xs={3}>
+                <Grid item xs={3} key={index}>
                     <BookDisplay key={index} book={book} />
                 </Grid>
             ))}

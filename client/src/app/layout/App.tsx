@@ -6,12 +6,14 @@ import { getCookie } from "../utility/utility";
 import agent from "../agent";
 import { useAppDispatch } from "../store/configureStore";
 import { setShoppingCart } from "../../features/shoppingCart/shoppingCartSlice";
+import { getCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const customerId = getCookie('customerId');
+    dispatch(getCurrentUser());
     if(customerId){
       agent.ShoppingCart.get()
         .then(cart => dispatch(setShoppingCart(cart)))

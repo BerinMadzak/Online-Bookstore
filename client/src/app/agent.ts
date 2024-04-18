@@ -1,6 +1,7 @@
 //Handles all requests
 import axios, { AxiosResponse } from "axios";
 import { PaginatedResponse } from "./models/pagination";
+import { store } from "./store/configureStore";
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 axios.defaults.withCredentials = true;
@@ -17,6 +18,12 @@ axios.interceptors.response.use(async response => {
         return response;
     }
     return response;
+})
+
+axios.interceptors.request.use(config => {
+    const token = store.getState().account.user?.token;
+    if(token) config.headers.Authorization = 'Bearer ${token}';
+    return config;
 })
 
 const requests = {

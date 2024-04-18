@@ -11,7 +11,7 @@ export default function FilterDropdown({items, onChange, selectedValue}: Props) 
         <FormControl fullWidth>
             <Select value={selectedValue} onChange={onChange}>
                 {items.map(value => (
-                    <MenuItem value={value}>{value}</MenuItem>
+                    <MenuItem value={value} key={value}>{value}</MenuItem>
                 ))}
             </Select>
         </FormControl>

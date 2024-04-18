@@ -1,15 +1,21 @@
 import agent from "../../app/agent";
 import { Avatar, Box, Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
+import { useAppDispatch } from "../../app/store/configureStore";
+import { signIn } from "./accountSlice";
 
 export default function Login() {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({ mode: 'onTouched' }); 
 
     async function submitForm(data: FieldValues){
         try{
-            await agent.Account.login(data);
+            await dispatch(signIn(data));
+            navigate('/shop');
         } catch(error) {
             console.log(error);
         }
