@@ -4,5 +4,6 @@ namespace API.DTOs
     {
         public string Email { get; set; }
         public string Token { get; set; }
+        public ShoppingCartDto ShoppingCart { get; set; }
     }
 }

@@ -3,6 +3,7 @@ import { User } from "../../app/models/user";
 import { FieldValues } from "react-hook-form";
 import agent from "../../app/agent";
 import { router } from "../../app/router/Routes";
+import { setShoppingCart } from "../shoppingCart/shoppingCartSlice";
 
 interface AccountState {
     user: User | null;
@@ -16,7 +17,9 @@ export const signIn = createAsyncThunk<User, FieldValues>(
     'account/signIn',
     async(data, thunkAPI) => {
         try {
-            const user = await agent.Account.login(data);
+            const userDto = await agent.Account.login(data);
+            const {shoppingCart, ...user} = userDto;
+            if(shoppingCart) thunkAPI.dispatch(setShoppingCart(shoppingCart));
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         } catch (error: any) {
@@ -30,7 +33,9 @@ export const getCurrentUser = createAsyncThunk<User>(
     async(_, thunkAPI) => {
         thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)));
         try {
-            const user = await agent.Account.currentUser();
+            const userDto = await agent.Account.currentUser();
+            const {shoppingCart, ...user} = userDto;
+            if(shoppingCart) thunkAPI.dispatch(setShoppingCart(shoppingCart));
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         } catch(error: any) {
@@ -63,11 +68,11 @@ export const accountSlice = createSlice({
             localStorage.removeItem('user');
             router.navigate('/');
         });
-        builder.addCase(signIn.rejected, (state, action) => {
-            console.log(action.payload);
-        });
         builder.addMatcher(isAnyOf(signIn.fulfilled, getCurrentUser.fulfilled), (state, action) => {
             state.user = action.payload;
+        });
+        builder.addMatcher(isAnyOf(signIn.rejected), (state, action) => {
+            throw action.payload;
         });
     })
 })

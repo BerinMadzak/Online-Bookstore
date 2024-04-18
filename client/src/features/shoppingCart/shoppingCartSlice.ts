@@ -54,7 +54,10 @@ export const shoppingCartSlice = createSlice({
     initialState, 
     reducers: {
         setShoppingCart: (state, action) => {
-            state.shoppingCart = action.payload
+            state.shoppingCart = action.payload;
+        },
+        clearShoppingCart: (state) => {
+            state.shoppingCart = null;
         }
     },
     extraReducers: (builder => {
@@ -63,7 +66,7 @@ export const shoppingCartSlice = createSlice({
             const index = state.shoppingCart?.items.findIndex(i => i.bookId === bookId);
             if(index === -1 || index === undefined) return;
             state.shoppingCart!.items[index].quantity -= quantity;
-            if(state.shoppingCart?.items[index].quantity === 0) state.shoppingCart.items.splice(index, 1);
+            if(state.shoppingCart?.items[index].quantity === 0) state.shoppingCart?.items.splice(index, 1);
         });
         builder.addMatcher(isAnyOf(addItemToCartAsync.fulfilled, getShoppingCartAsync.fulfilled), (state, action) => {
             state.shoppingCart = action.payload;
@@ -71,4 +74,4 @@ export const shoppingCartSlice = createSlice({
     })
 })
 
-export const {setShoppingCart} = shoppingCartSlice.actions;
+export const {setShoppingCart, clearShoppingCart} = shoppingCartSlice.actions;

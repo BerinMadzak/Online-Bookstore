@@ -22,7 +22,7 @@ axios.interceptors.response.use(async response => {
 
 axios.interceptors.request.use(config => {
     const token = store.getState().account.user?.token;
-    if(token) config.headers.Authorization = 'Bearer ${token}';
+    if(token) config.headers.Authorization = `Bearer ${token}`;
     return config;
 })
 

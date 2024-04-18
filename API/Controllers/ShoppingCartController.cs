@@ -19,7 +19,7 @@ namespace API.Controllers
         [HttpGet(Name = "GetShoppingCart")]
         public async Task<ActionResult<ShoppingCartDto>> GetShoppingCart()
         {
-            var cart = await RetrieveShoppingCart();
+            var cart = await RetrieveShoppingCart(GetCustomerId());
 
             if (cart == null) return NotFound();
 
@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<ShoppingCartDto>> AddItemToCart(int bookId, int quantity)
         {
-            var cart = await RetrieveShoppingCart();
+            var cart = await RetrieveShoppingCart(GetCustomerId());
             if (cart == null) cart = CreateShoppingCart();
 
             var book = await context.Books.FindAsync(bookId);
@@ -46,7 +46,7 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteItemFromCart(int bookId, int quantity)
         {
-            var cart = await RetrieveShoppingCart();
+            var cart = await RetrieveShoppingCart(GetCustomerId());
             if (cart == null) return NotFound();
 
             cart.RemoveItem(bookId, quantity);
@@ -58,20 +58,35 @@ namespace API.Controllers
         }
 
         //Helper Methods
-        private async Task<ShoppingCart> RetrieveShoppingCart()
+        private async Task<ShoppingCart> RetrieveShoppingCart(string customerId)
         {
+            if (string.IsNullOrEmpty(customerId))
+            {
+                Response.Cookies.Delete("customerId");
+                return null;
+            }
+
             return await context.ShoppingCarts
                 .Include(i => i.Items)
                 .ThenInclude(p => p.Book)
-                .FirstOrDefaultAsync(x => x.CustomerId == Request.Cookies["customerId"]);
+                .FirstOrDefaultAsync(x => x.CustomerId == customerId);
+        }
+
+        private string GetCustomerId()
+        {
+            return User.Identity?.Name ?? Request.Cookies["customerId"];
         }
 
         private ShoppingCart CreateShoppingCart()
         {
-            //Create cookie
-            var customerId = Guid.NewGuid().ToString();
-            var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
-            Response.Cookies.Append("customerId", customerId, cookieOptions);
+            var customerId = User.Identity?.Name;
+            if (string.IsNullOrEmpty(customerId))
+            {
+                //Create cookie
+                customerId = Guid.NewGuid().ToString();
+                var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
+                Response.Cookies.Append("customerId", customerId, cookieOptions);
+            }
 
             //Create cart
             var cart = new ShoppingCart { CustomerId = customerId };
