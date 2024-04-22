@@ -8,18 +8,21 @@ import ShoppingCartDisplay from "../../features/shoppingCart/ShoppingCartDisplay
 import Checkout from "../../features/checkout/Checkout";
 import Login from "../../features/account/Login";
 import Register from "../../features/account/Register";
+import RequireAuth from "./RequireAuth";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
         children: [
+            {element: <RequireAuth />, children: [
+                {path: 'checkout', element: <Checkout />}
+            ]},
             {path: '', element: <HomePage />},
             {path: 'shop', element: <Store />},
             {path: 'shop/:id', element: <BookDetails />},
             {path: 'error', element: <ErrorPage />},
             {path: 'shoppingCart', element: <ShoppingCartDisplay />},
-            {path: 'checkout', element: <Checkout />},
             {path: 'login', element: <Login />},
             {path: 'register', element: <Register />},
             {path: '*', element: <Navigate replace to='/error' />}
