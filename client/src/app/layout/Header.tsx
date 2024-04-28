@@ -34,7 +34,8 @@ export default function Header({darkMode, setDarkMode}: Props)
                             <ShoppingCart sx={{color: 'white'}}/>
                         </Badge>
                     </IconButton>
-                    {user && <SignedInMenu />}
+                    {user ? <SignedInMenu /> : <Button component={Link} to='/login'>Login</Button>}
+                    
                 </Box>
             </Toolbar>
         </AppBar>

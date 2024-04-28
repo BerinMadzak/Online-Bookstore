@@ -2,6 +2,6 @@ import { Typography } from "@mui/material";
 
 export default function Checkout(){
     return( 
-        <Typography>Text</Typography>
+        <Typography>Checkout Page (WIP)</Typography>
     );
 }

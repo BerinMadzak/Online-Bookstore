@@ -1,4 +1,4 @@
-#Online Bookstore
+# Online Bookstore
 
 A practice project for an online bookstore using .Net 8.0 and React 18.
 

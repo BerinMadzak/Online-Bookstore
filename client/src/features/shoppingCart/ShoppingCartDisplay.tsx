@@ -69,8 +69,7 @@ export default function ShoppingCartDisplay() {
                     <Summary />
                 </Grid>
                 <Grid item xs={6} />
-                <Grid item xs={6}>
-                    <Checkout />
+                <Grid item xs={6}>                   
                     <Button
                         component={Link}
                         to='/checkout'
