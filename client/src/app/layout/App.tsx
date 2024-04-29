@@ -2,10 +2,8 @@ import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/materia
 import Header from "./Header";
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { getCookie } from "../utility/utility";
-import agent from "../agent";
 import { useAppDispatch } from "../store/configureStore";
-import { getShoppingCartAsync, setShoppingCart } from "../../features/shoppingCart/shoppingCartSlice";
+import { getShoppingCartAsync } from "../../features/shoppingCart/shoppingCartSlice";
 import { getCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
