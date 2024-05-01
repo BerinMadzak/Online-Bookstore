@@ -10,14 +10,16 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import { FormProvider, useForm } from 'react-hook-form';
+import { validationSchema } from './checkoutValidation';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -37,6 +39,13 @@ function getStepContent(step: number) {
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
 
+  const schema = validationSchema[activeStep];
+
+  const methods = useForm({
+    mode: 'all',
+    resolver: yupResolver(schema)
+  });
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -46,6 +55,7 @@ export default function Checkout() {
   };
 
   return (
+    <FormProvider {...methods}>
       <Grid container sx={{ height: { xs: '100%', sm: '100dvh' } }}>
         <Grid
           item
@@ -100,8 +110,8 @@ export default function Checkout() {
                 {steps.map((label) => (
                   <Step
                     sx={{
-                      ':first-child': { pl: 0 },
-                      ':last-child': { pr: 0 },
+                      ':first-of-type': { pl: 0 },
+                      ':last-of-type': { pr: 0 },
                     }}
                     key={label}
                   >
@@ -231,6 +241,7 @@ export default function Checkout() {
                     </Button>
                   )}
                   <Button
+                    disabled={!methods.formState.isValid}
                     variant="contained"
                     endIcon={<ChevronRightRoundedIcon />}
                     onClick={handleNext}
@@ -246,5 +257,6 @@ export default function Checkout() {
           </Box>
         </Grid>
       </Grid>
+      </FormProvider>
   );
 }

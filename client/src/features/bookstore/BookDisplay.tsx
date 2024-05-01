@@ -1,10 +1,9 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
 import { Book } from "../../app/models/book";
 import { Link } from "react-router-dom";
-import agent from "../../app/agent";
 import { currencyDisplay } from "../../app/utility/utility";
 import { useAppDispatch } from "../../app/store/configureStore";
-import { addItemToCartAsync, setShoppingCart } from "../shoppingCart/shoppingCartSlice";
+import { addItemToCartAsync } from "../shoppingCart/shoppingCartSlice";
 
 interface Props {
     book: Book;
@@ -12,12 +11,6 @@ interface Props {
 
 export default function BookDisplay({book}: Props) {
     const dispatch = useAppDispatch();
-
-    function addItemToCart(bookId: number) {
-        agent.ShoppingCart.addItem(bookId)
-            .then(cart => dispatch(setShoppingCart(cart)))
-            .catch(error => console.log(error));
-    }
 
     return (
         <Card sx={{ height: 470}}>

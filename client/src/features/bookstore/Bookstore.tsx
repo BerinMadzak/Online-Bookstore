@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { bookSelectors, getBooksAsync, getFiltersAsync, setBookParameters, setPageNumber } from "./bookstoreSlice";
 import BookList from "./BookList";
-import { Box, FormControl, FormControlLabel, Grid, Pagination, Paper, Radio, RadioGroup, Typography } from "@mui/material";
+import { FormControl, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import BookSearch from "./BookSearch";
 import FilterCheckbox from "./FilterCheckbox";
 import FilterDropdown from "./FilterDropdown";

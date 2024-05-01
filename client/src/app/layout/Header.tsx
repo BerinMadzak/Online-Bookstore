@@ -1,5 +1,5 @@
 import { ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, Box, Button, IconButton, List, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Link } from "react-router-dom";

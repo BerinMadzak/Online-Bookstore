@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Book } from "../../app/models/book";
 import { Button, Divider, Grid, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
-import agent from "../../app/agent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addItemToCartAsync, removeItemFromCartAsync } from "../shoppingCart/shoppingCartSlice";
 import { bookSelectors, getBookAsync } from "./bookstoreSlice";

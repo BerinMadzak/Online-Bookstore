@@ -25,7 +25,7 @@ export default function Summary(){
                             <TableCell align="right">{currencyDisplay(subtotal + deliveryFee)}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>
+                            <TableCell colSpan={3}>
                                 <span style={{fontStyle: 'italic'}}>*Free delivery for orders over 50$</span>
                             </TableCell>
                         </TableRow>
