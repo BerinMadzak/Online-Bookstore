@@ -82,7 +82,6 @@ export default function PaymentForm() {
         label="Remember credit card details for next time"
       />
       </Box>
-    )
     </Stack>
   );
 }

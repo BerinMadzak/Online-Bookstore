@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
 {
@@ -25,6 +26,11 @@ namespace API.Extensions
                     Quantity = item.Quantity
                 }).ToList()
             };
+        }
+
+        public static IQueryable<ShoppingCart> GetCartWithItems(this IQueryable<ShoppingCart> query, string customerId)
+        {
+            return query.Include(i => i.Items).ThenInclude(p => p.Book).Where(b => b.CustomerId == customerId);
         }
     }
 }
